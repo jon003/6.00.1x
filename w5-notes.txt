@@ -1,0 +1,145 @@
+
+Orders of growth:
+o(1) denotes constant run time
+o(log n) denotes logarithmic run time
+ examples: bisection search, binary search of a list
+o(n) denotes liner run time
+o(n log n) denotes log-linear run time
+o(n^c) denotes polynomial run time (c is a constant) 
+o(c^n)denotes exponential run time (c is a constant breing raised to a power based on size of input)
+
+polynomials:
+quadratic n^2
+cubic n^3
+
+Asymptotic Notatation
+-Describe running time in terms of number of basic steps
+-If running time is sum of multiple terms, keep one with the largest growth rate ("as product size grows to infinity.")
+-If remaining term is a product, drop any multiplicative constants.
+
+def f(x):
+  for i in range(1000):
+    ans = i               # 1000
+  for i in range(x):
+    ans += 1              # 2x (plus and assignment are separate operations, hence 2)
+  for i in range(x):
+    for j in range(x):    # 2 x*x  (one x for iterating i and one x for iterating j)
+      ans += 1
+
+Complexity is: 1000 + 2x  2x^2
+
+If x is small, then the constant (1000) dominates worst case
+If x is large, then the quadratic portion dominates worst case
+
+So we don't care much about constants.
+Therefore, all of these are O(n^2)
+
+
+Logarithmic complexity example:
+
+def intToStr(i):
+  digits = '0123456789'                 # 1
+  if i == 0:                            # 1
+    return '0'                          # 1
+  result = ''                           # 1
+  while i > 0:                          # i
+    result = digits[i % 10] + results   # 4
+    i = i / 10                          # 2
+  return result                         # 1
+
+Complexity: O(log(i))
+
+Linear complexity example:
+
+def addDigits(s):
+  val = 0
+  for c in s:
+    vl += int(c)
+  return val
+
+Complexity: O(len(s))
+
+def fact(n):
+  if n == 1:
+    return 1
+  else:
+    return n*fact(n-1)
+
+Complexity: O(n)
+
+
+Quadratic Complexity Example:
+
+def isSubset(L1, L2):
+  for e1 in L1:         # outer loop executed len(L1) times
+    matched = False
+    for e2 in L2:       # each iteration will execute inner loop up to len(L2) times  O(len(L1) * len(L2))
+      if e1 == e2:
+        matched = True
+        break
+    if not matched:
+      return False
+  return True
+
+
+Worst case when L1 and L2 are the same length, but none of the elements of L1 are in L2
+
+Complexity: O(len(L1)^2)
+
+
+def intersect(L1, L2):
+  tmp = []
+  for e1 in L1:         # first nest tloop takes len(L1)*len(L2)
+    for e2 in L2:
+      if e1 == e2:
+        tmp.append(e1)
+  res = []
+  for e in tmp:         # second loop takes at most len(L1) steps
+    if not(e in res):
+      res.append(e)
+  return res
+
+Latter term is overshadowed by the first term, so:
+
+Complexity: O(len(L1)*len(L2))
+
+
+Exponential Complexity:
+- recursive functions where more than one recursive call for each size of the problem
+  ex: towers of hanoi
+-Many important problems are inherently exponentials
+  - Unfortunate, as cost can be high
+  - Wil llead us to consider approximate solutions more quickly
+
+
+Exponential Complexity Example:
+
+def genSubsets(L):
+  res = []
+  if len(L) == 0:
+    return [[]] # list of empty list
+  smaller = genSubsets(L[:-1])
+  # get all subsets without last element
+  extra = L[-1:]
+  # create a list of just last elements
+  new = []
+  for small in smaller:
+    new.append(small+extra)
+  # for all smaller solutions, add one with last element
+  return smaller+new
+  # combine those with last element and those without
+
+# assuming append is constant time
+# time includes time to solve smaller problme, plus time needed to make a copy of all elements in smaller problem
+# important to think aobut size of smaller
+# know that for a set of size k there are 2^k cases
+# so to solve need 2^n-1 + 2^n-2 + ..... 2^0
+# Math tells us this is O(2^n)
+
+Complexity: O(2^n)
+
+
+
+
+
+
